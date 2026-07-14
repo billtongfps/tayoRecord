@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+    margin: 0;
+    background: transparent;
+    color: white;
+    font-size: 35px;
+    font-family: Arial;
+    font-weight: bold;
+}
+
+#record {
+    text-shadow: 2px 2px 4px black;
+}
+</style>
+</head>
+
+<body>
+
+<div id="record">Loading...</div>
+
+<script>
+
+async function updateRecord() {
+
+    let response = await fetch(
+        "https://vaccie.pythonanywhere.com/match_history/Tayo/ruve/ap/pc?timezone=Australia/Sydney"
+    );
+
+    let text = await response.text();
+
+    // Remove HTML tags
+    text = text.replace(/(<([^>]+)>)/gi, "");
+
+    // Extract W/L/D numbers
+    let wins = text.match(/(\d+)W/);
+    let losses = text.match(/(\d+)L/);
+    let draws = text.match(/(\d+)D/);
+
+    wins = wins ? wins[1] : 0;
+    losses = losses ? losses[1] : 0;
+    draws = draws ? draws[1] : 0;
+
+    // Display as W - D - L
+    document.getElementById("record").innerHTML =
+    "W / L " + wins + " - " + losses;
+
+}
+
+updateRecord();
+
+setInterval(updateRecord, 60000);
+
+</script>
+
+setInterval(updateRecord, 60000);
+
+</script>
+
+</body>
+</html>
